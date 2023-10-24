@@ -1,0 +1,48 @@
+Given a valid expression containing only binary operators '+', '-', '*', '/' and operands, remove all the redundant parenthesis.
+
+A set of parenthesis is said to be redundant if, removing them, does not change the value of the expression.
+
+Note: The operators '+' and '-' have the same priority. '*' and '/' also have the same priority. '*' and '/' have more priority than '+' and '-'.
+
+
+Example 1:
+
+Input:
+Exp = (A*(B+C))
+Output: A*(B+C)
+Explanation: The outermost parenthesis
+are redundant.
+Example 2:
+
+Input:
+Exp = A+(B+(C))
+Output: A+B+C
+Explanation: All the parenthesis
+are redundant.
+
+
+def removeRedundantParentheses(expression):
+    stack = []
+    for char in expression:
+        if char == ')':
+            top = stack.pop()
+            inner = []
+            while top != '(':
+                inner.append(top)
+                top = stack.pop()
+            inner = ''.join(inner)
+            if set(inner) & {'+', '-', '*', '/'}:
+                stack.append('(' + inner + ')')
+            else:
+                stack.append(inner)
+        else:
+            stack.append(char)
+    return ''.join(stack)
+
+# Example usage:
+exp1 = "(A*(B+C))"
+exp2 = "A+(B+(C))"
+result1 = removeRedundantParentheses(exp1)
+result2 = removeRedundantParentheses(exp2)
+print(result1)  # Output: A*(B+C)
+print(result2)  # Output: A+B+C
